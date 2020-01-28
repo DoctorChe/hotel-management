@@ -1,11 +1,23 @@
 class Item:
-    def __init__(self, title, price):
+    def __init__(self, id_, title, price):
+        self.id = id_
         self.title = title
         self.price = price
 
     @staticmethod
     def get_time_period(check_in_date, check_out_date):
         return check_out_date - check_in_date
+
+
+class Room(Item):
+    def __init__(self, id_, title, price, number, type_):
+        super().__init__(id_, title, price)
+        self.number = number
+        self.type = type_
+
+
+class Service(Item):
+    pass
 
 
 class OrderItem:
@@ -49,12 +61,35 @@ class OrderBuilder:
 
     def check_in_date(self, date):
         self.order._check_in_date = date
+        return self
 
     def check_out_date(self, date):
         self.order._check_out_date = date
+        return self
 
     def add_room(self, room):
         self.order.rooms.append(room)
+        return self
 
     def add_extra_service(self, service):
         self.order.extra_services.append(service)
+        return self
+
+    def build(self):
+        return self.order
+
+
+class User:
+    def __init__(self, id_):
+        self.id = id_
+
+
+class Customer(User):
+    def __init__(self, id_, name):
+        super().__init__(id_)
+        self.name = name
+
+
+class Administrator(User):
+    def __init__(self, id_):
+        super().__init__(id_)
