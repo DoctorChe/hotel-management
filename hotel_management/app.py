@@ -52,10 +52,6 @@ class Order:
 
 
 class OrderBuilder:
-    """
-    Построитель заказа
-    """
-
     def __init__(self, customer):
         self.order = Order(customer)
 
