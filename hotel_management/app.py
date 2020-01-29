@@ -1,7 +1,6 @@
 class Item:
-    def __init__(self, id_, title, price):
+    def __init__(self, id_, price):
         self.id = id_
-        self.title = title
         self.price = price
 
     @staticmethod
@@ -10,14 +9,33 @@ class Item:
 
 
 class Room(Item):
-    def __init__(self, id_, title, price, number, type_):
-        super().__init__(id_, title, price)
+    def __init__(self, id_, price, number, type_):
+        super().__init__(id_, price)
         self.number = number
         self.type = type_
 
 
 class Service(Item):
+    def __init__(self, id_, price, title):
+        super().__init__(id_, price)
+        self.title = title
+
+
+class PeriodicService(Service):
     pass
+
+
+class OneTimeService(Service):
+    pass
+
+
+class OneTimeToPeriodAdapter(OneTimeService):
+    def __init__(self, adaptee):
+        self._adaptee = adaptee
+
+    @staticmethod
+    def get_time_period(check_in_date, check_out_date):
+        return 1
 
 
 class OrderItem:
