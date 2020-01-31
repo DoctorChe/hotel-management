@@ -1,16 +1,6 @@
 from datetime import date
 
-from hotel_management.app import Customer, Room, PeriodicService, OneTimeService
-
-
-class TestCustomer:
-
-    def setup(self):
-        self.customer = Customer(1, 'John')
-
-    def test_init(self):
-        assert self.customer.id == 1
-        assert self.customer.name == 'John'
+from hotel_management.app import Customer, Room, PeriodicService, OneTimeService, Administrator
 
 
 class TestRoom:
@@ -59,3 +49,31 @@ class TestOneTimeToPeriodAdapter:
 
     def test_get_time_period(self):
         assert self.onetimeservice.get_time_period_impl(self.check_in_date, self.check_out_date) == 1
+
+
+class TestCustomer:
+    def setup(self):
+        self.customer = Customer(1, 'Duncan')
+
+    def test_init(self):
+        assert self.customer.id == 1
+        assert self.customer.name == 'Duncan'
+        assert self.customer.orders is None
+        assert self.customer.is_loyal is False
+
+    def test_add_discount_if_not_loyal(self):
+        assert self.customer.add_discount() == 0
+
+    def test_add_discount_if_loyal(self):
+        self.customer.is_loyal = True
+        assert self.customer.add_discount() == 10
+
+    class TestAdministrator:
+        def setup(self):
+            self.admin = Administrator(1)
+
+        def test_init(self):
+            assert self.admin.id == 1
+
+        # def test_add_discount(self):
+        #     assert self.admin.add_discount() == 0

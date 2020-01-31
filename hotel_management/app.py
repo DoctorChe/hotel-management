@@ -1,5 +1,7 @@
 import abc
 
+DISCOUNT_STANDARD = 10
+
 
 class AbstractItem:
     def __init__(self, implementor):
@@ -104,17 +106,54 @@ class OrderBuilder:
         return self.order
 
 
-class User:
+class UserInterface(metaclass=abc.ABCMeta):
+    @abc.abstractmethod
+    def create_order(self):
+        pass
+
+    @abc.abstractmethod
+    def add_discount(self):
+        pass
+
+
+class User(UserInterface):
     def __init__(self, id_):
         self.id = id_
 
+    def create_order(self):
+        pass
+
+    def add_discount(self):
+        pass
+
 
 class Customer(User):
+    DISCOUNT = {
+        0: 0,
+        1: DISCOUNT_STANDARD
+    }
+
     def __init__(self, id_, name):
         super().__init__(id_)
         self.name = name
+        self.orders = None
+        self.is_loyal = False
+
+    def add_discount(self):
+        return __class__.DISCOUNT[self.is_loyal]
+
+
+class CreateDiscount:
+    def __init__(self, amount):
+        self.amount = amount
+
+    def __call__(self, *args, **kwargs):
+        return self.amount
 
 
 class Administrator(User):
     def __init__(self, id_):
         super().__init__(id_)
+
+    # def add_discount(self):
+    #     return CreateDiscount(amount=0).amount
