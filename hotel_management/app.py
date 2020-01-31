@@ -1,10 +1,28 @@
-class Item:
+import abc
+
+
+class AbstractItem:
+    def __init__(self, implementor):
+        self._implementor = implementor
+
+    def get_time_period(self, check_in_date, check_out_date):
+        return self._implementor.get_time_period_impl(check_in_date, check_out_date)
+
+
+class ItemImplementor(metaclass=abc.ABCMeta):
+    @staticmethod
+    @abc.abstractmethod
+    def get_time_period_impl(check_in_date, check_out_date):
+        pass
+
+
+class Item(ItemImplementor):
     def __init__(self, id_, price):
         self.id = id_
         self.price = price
 
     @staticmethod
-    def get_time_period(check_in_date, check_out_date):
+    def get_time_period_impl(check_in_date, check_out_date):
         return check_out_date - check_in_date
 
 
@@ -26,15 +44,8 @@ class PeriodicService(Service):
 
 
 class OneTimeService(Service):
-    pass
-
-
-class OneTimeToPeriodAdapter(OneTimeService):
-    def __init__(self, adaptee):
-        self._adaptee = adaptee
-
     @staticmethod
-    def get_time_period(check_in_date, check_out_date):
+    def get_time_period_impl(check_in_date, check_out_date):
         return 1
 
 

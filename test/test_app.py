@@ -1,6 +1,6 @@
 from datetime import date
 
-from hotel_management.app import Customer, Room, PeriodicService, OneTimeService, OneTimeToPeriodAdapter
+from hotel_management.app import Customer, Room, PeriodicService, OneTimeService
 
 
 class TestCustomer:
@@ -26,7 +26,8 @@ class TestRoom:
         assert self.room.type == 'Double'
 
     def test_get_time_period(self):
-        assert self.room.get_time_period(self.check_in_date, self.check_out_date) == date(2020, 1, 5) - date(2020, 1, 1)
+        assert self.room.get_time_period_impl(self.check_in_date, self.check_out_date) == (date(2020, 1, 5) -
+                                                                                           date(2020, 1, 1))
 
 
 class TestPeriodicService:
@@ -41,14 +42,13 @@ class TestPeriodicService:
         assert self.periodicservice.title == 'Breakfast'
 
     def test_get_time_period(self):
-        assert self.periodicservice.get_time_period(self.check_in_date, self.check_out_date) == (date(2020, 1, 5) -
-                                                                                                 date(2020, 1, 1))
+        assert self.periodicservice.get_time_period_impl(self.check_in_date, self.check_out_date) == (date(2020, 1, 5) -
+                                                                                                      date(2020, 1, 1))
 
 
 class TestOneTimeToPeriodAdapter:
     def setup(self):
         self.onetimeservice = OneTimeService(1, 150, 'Transfer')
-        self.adapter = OneTimeToPeriodAdapter(self.onetimeservice)
         self.check_in_date = date(2020, 1, 1)
         self.check_out_date = date(2020, 1, 5)
 
@@ -58,4 +58,4 @@ class TestOneTimeToPeriodAdapter:
         assert self.onetimeservice.title == 'Transfer'
 
     def test_get_time_period(self):
-        assert self.adapter.get_time_period(self.check_in_date, self.check_out_date) == 1
+        assert self.onetimeservice.get_time_period_impl(self.check_in_date, self.check_out_date) == 1
