@@ -1,7 +1,5 @@
 import abc
 
-DISCOUNT_STANDARD = 10
-
 
 class AbstractItem:
     def __init__(self, implementor):
@@ -112,7 +110,7 @@ class UserInterface(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def add_discount(self):
+    def add_discount(self, *args, **kwargs):
         pass
 
 
@@ -123,16 +121,11 @@ class User(UserInterface):
     def create_order(self):
         pass
 
-    def add_discount(self):
+    def add_discount(self, *args, **kwargs):
         pass
 
 
 class Customer(User):
-    DISCOUNT = {
-        0: 0,
-        1: DISCOUNT_STANDARD
-    }
-
     def __init__(self, id_, name):
         super().__init__(id_)
         self.name = name
@@ -140,20 +133,28 @@ class Customer(User):
         self.is_loyal = False
 
     def add_discount(self):
-        return __class__.DISCOUNT[self.is_loyal]
+        return Discount(is_loyal=self.is_loyal).calc_discount()
 
 
-class CreateDiscount:
-    def __init__(self, amount):
+class Discount:
+    DISCOUNT_STANDARD = 10
+
+    DISCOUNT = {
+        False: 0,
+        True: DISCOUNT_STANDARD
+    }
+
+    def __init__(self, amount=0, is_loyal=False):
         self.amount = amount
+        self.is_loyal = is_loyal
 
-    def __call__(self, *args, **kwargs):
-        return self.amount
+    def calc_discount(self):
+        return max(self.amount, self.DISCOUNT[self.is_loyal])
 
 
 class Administrator(User):
     def __init__(self, id_):
         super().__init__(id_)
 
-    # def add_discount(self):
-    #     return CreateDiscount(amount=0).amount
+    def add_discount(self, amount):
+        return Discount(amount=amount).calc_discount()

@@ -1,6 +1,6 @@
 from datetime import date
 
-from hotel_management.app import Customer, Room, PeriodicService, OneTimeService, Administrator
+from hotel_management.app import Customer, Room, PeriodicService, OneTimeService, Administrator, Discount
 
 
 class TestRoom:
@@ -51,6 +51,26 @@ class TestOneTimeToPeriodAdapter:
         assert self.onetimeservice.get_time_period_impl(self.check_in_date, self.check_out_date) == 1
 
 
+class TestDiscount:
+    def setup(self):
+        self.discount = Discount()
+        self.discount_amount = Discount(amount=15)
+        self.discount_loyal = Discount(is_loyal=True)
+
+    def test_init(self):
+        assert self.discount.amount == 0
+        assert self.discount.is_loyal is False
+        assert self.discount_amount.amount == 15
+        assert self.discount_amount.is_loyal is False
+        assert self.discount_loyal.amount == 0
+        assert self.discount_loyal.is_loyal is True
+
+    def test_calc_discount(self):
+        assert self.discount.calc_discount() == 0
+        assert self.discount_amount.calc_discount() == 15
+        assert self.discount_loyal.calc_discount() == 10
+
+
 class TestCustomer:
     def setup(self):
         self.customer = Customer(1, 'Duncan')
@@ -68,12 +88,15 @@ class TestCustomer:
         self.customer.is_loyal = True
         assert self.customer.add_discount() == 10
 
-    class TestAdministrator:
-        def setup(self):
-            self.admin = Administrator(1)
 
-        def test_init(self):
-            assert self.admin.id == 1
+class TestAdministrator:
+    def setup(self):
+        self.admin = Administrator(1)
 
-        # def test_add_discount(self):
-        #     assert self.admin.add_discount() == 0
+    def test_init(self):
+        assert self.admin.id == 1
+
+    def test_add_discount(self):
+        assert self.admin.add_discount(0) == 0
+        assert self.admin.add_discount(15) == 15
+
