@@ -1,16 +1,6 @@
 from datetime import date
 
-from hotel_management.app import Customer, Room, PeriodicService, OneTimeService
-
-
-class TestCustomer:
-
-    def setup(self):
-        self.customer = Customer(1, 'John')
-
-    def test_init(self):
-        assert self.customer.id == 1
-        assert self.customer.name == 'John'
+from hotel_management.hotel import Room, PeriodicService, OneTimeService
 
 
 class TestRoom:
@@ -46,7 +36,7 @@ class TestPeriodicService:
                                                                                                       date(2020, 1, 1))
 
 
-class TestOneTimeToPeriodAdapter:
+class TestOneTimeService:
     def setup(self):
         self.onetimeservice = OneTimeService(1, 150, 'Transfer')
         self.check_in_date = date(2020, 1, 1)
