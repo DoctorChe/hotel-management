@@ -94,18 +94,3 @@ class CustomerMapper:
             self.connection.commit()
         except Exception as e:
             raise DbDeleteException(e.args)
-
-
-if __name__ == '__main__':
-    create_db(DB_PATH)
-    customer_mapper = CustomerMapper(connection)
-    customer_1 = Customer(1, 'Duncan')
-    print(customer_1.__dict__)
-    customer_mapper.insert(customer_1)
-    customer_2 = customer_mapper.find_by_id(1)
-    print(customer_2.__dict__)
-    customer_1 = Customer(1, 'Scotch')
-    customer_mapper.update(customer_1)
-    customer_2 = customer_mapper.find_by_id(1)
-    print(customer_2.__dict__)
-    customer_mapper.delete(customer_1)
