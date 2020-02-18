@@ -1,6 +1,7 @@
 import contextlib
 import sqlite3
 
+from hotel_management.domain_model import DomainModel, Int, String, FieldCollection, Bool, Date, DecimalField
 from hotel_management.user import Customer
 
 DB_PATH = 'db.sqlite'
@@ -94,3 +95,52 @@ class CustomerMapper:
             self.connection.commit()
         except Exception as e:
             raise DbDeleteException(e.args)
+
+
+class ItemDM(DomainModel):
+    id = Int()
+    price = DecimalField()
+
+    __unique_key__ = (id,)
+
+
+# class RoomDM(ItemDM):
+#     number = Int()
+#     type = String()
+#
+#     __unique_key__ = (number,)
+
+
+class RoomDM(ItemDM):
+    id = Int()
+    price = DecimalField()
+    number = Int()
+    type = String()
+
+    __unique_key__ = (id, number)
+
+
+class ServiceDM(ItemDM):
+    title = String()
+
+    __unique_key__ = (title,)
+
+
+# class OrderItemDM(DomainModel):
+#     id = Int()
+#
+#     __unique_key__ = (id,)
+#
+#     item = FieldCollection(ItemDM)
+
+
+class OrderDM(DomainModel):
+    id = Int()
+    check_in_date = Date()
+    check_out_date = Date()
+
+    __unique_key__ = (id,)
+
+    # order_items = FieldCollection(OrderItemDM)
+    order_rooms = FieldCollection(RoomDM)
+    order_services = FieldCollection(ServiceDM)
