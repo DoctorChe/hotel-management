@@ -106,7 +106,7 @@ class ItemDM(DomainModel):
 
 # class RoomDM(ItemDM):
 #     number = Int()
-#     type = String()
+#     # type = String()
 #
 #     __unique_key__ = (number,)
 
