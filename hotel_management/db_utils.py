@@ -111,7 +111,7 @@ class ItemDM(DomainModel):
 #     __unique_key__ = (number,)
 
 
-class RoomDM(ItemDM):
+class RoomDM(DomainModel):
     id = Int()
     price = DecimalField()
     number = Int()
