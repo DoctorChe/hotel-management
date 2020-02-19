@@ -66,7 +66,10 @@ class TestItemDM:
 #         assert isinstance(self.room_1.__fields__['type'], String) is True
 #         assert self.room_1.get_data()['number'] == 101
 #         assert self.room_1.get_data()['type'] == 'Single'
-
+#         assert self.room_1.get_data()['id'] == 1
+#         assert self.room_1.get_data()['price'] == 1000.00
+#         assert self.room_1.get_data()['number'] == 101
+#         assert self.room_1.get_data()['type'] == 'Single'
 
 class TestRoomDM:
     def setup(self):
